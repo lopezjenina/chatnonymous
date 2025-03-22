@@ -3,15 +3,32 @@ const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 
+
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  credentials: true
+}));
+
+app.get('/', (req, res) => {
+  res.send('Anonymous Chat Server is running. Connect with a Socket.io client.');
+});
+
 
 const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000", "https://chatnonymous.vercel.app"],
-    methods: ['GET', 'POST']
+    origin: '*',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    credentials: true
   }
+});
+
+const PORT = process.env.PORT || 10000;
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
 // Store active users waiting for a match
@@ -151,9 +168,4 @@ io.on('connection', (socket) => {
       }
     }
   });
-});
-
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
 });
