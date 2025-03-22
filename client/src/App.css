@@ -1,5 +1,3 @@
-
-
 /* Add this at the top of your CSS file */
 .press-start-2p-regular {
   font-family: "Press Start 2P", system-ui;
@@ -7,15 +5,23 @@
   font-style: normal;
 }
 
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: "Outfit", sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #f5eef1;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, .pixel-font {
@@ -23,22 +29,24 @@ h1, h2, h3, .pixel-font {
   letter-spacing: 1px;
 }
 
-
-/* You might want to adjust the size since pixel fonts tend to be larger */
+/* Typography with responsive sizes */
 h1 {
-  font-size: 64px;
+  font-size: clamp(20px, 5vw, 34px);
+  margin-bottom: 20px;
 }
 
 h2 {
-  font-size: 20px;
+  font-size: clamp(16px, 4vw, 20px);
 }
 
 h3 {
-  font-size: 20px;
+  font-size: clamp(14px, 3.5vw, 20px);
 }
 
 .App {
   text-align: center;
+  width: 100%;
+  max-width: 100vw;
 }
 
 .App-header {
@@ -49,14 +57,18 @@ h3 {
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: #723d86;
+  padding: 20px;
+  width: 100%;
 }
 
+/* Form styles with responsive widths */
 .form {
   background-color: #fae6e7;
-  padding: 60px;
+  padding: clamp(20px, 5vw, 60px);
   display: flex;
   flex-direction: column;
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   margin-top: 20px;
   border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -67,43 +79,45 @@ h3 {
   margin-bottom: 15px;
   text-align: left;
   font-family: "Outfit", sans-serif;
-  
+  width: 100%;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 5px;
-  font-size: 16px;
+  font-size: clamp(14px, 3vw, 16px);
   font-family: "Outfit", sans-serif;
 }
 
 .form-group ::placeholder {
-  font-size: 16px;
+  font-size: clamp(14px, 3vw, 16px);
   color: #3d3d3d70;
 }
 
 .form-group input {
-  width: 92%;
+  width: 100%;
   padding: 10px 15px;
   margin-bottom: 20px;
-  font-size: 18px;
+  font-size: clamp(14px, 3vw, 18px);
   border: 1px solid #ccc;
   border-radius: 5px;
   font-family: "Outfit", sans-serif;
   color: #723d86;
 }
 
+/* Button styles */
 button {
-  padding: 20px 15px;
+  padding: clamp(10px, 3vw, 20px) clamp(10px, 3vw, 15px);
   background-color: #bde0fe;
   color: #723d86;
   border: none;
   border-radius: 5px;
-  font-size: 13px;
+  font-size: clamp(10px, 2.5vw, 13px);
   cursor: pointer;
   font-weight: bold;
   font-family: "Press Start 2P", system-ui;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
 }
 
 button:disabled {
@@ -111,16 +125,20 @@ button:disabled {
   cursor: not-allowed;
 }
 
+/* Chat container with responsive sizing */
 .chat-container {
   display: flex;
   flex-direction: column;
-  height: 500px;
-  padding: 20px;
-  width: 500px;
+  height: 100vh;
+  max-height: 500px;
+  padding: clamp(10px, 3vw, 20px);
+  width: 100%;
+  max-width: 500px;
   border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #f5d6e2;
   color: #723d86;
+  margin: 0 auto;
 }
 
 .chat-header {
@@ -128,6 +146,13 @@ button:disabled {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chat-header button {
+  font-size: clamp(8px, 2vw, 13px);
+  padding: clamp(8px, 2vw, 15px);
 }
 
 .searching-container {
@@ -138,10 +163,12 @@ button:disabled {
   justify-content: center;
   background-color: #f5eef1;
   border-radius: 8px;
+  padding: 20px;
+  text-align: center;
 }
 
 .small-text {
-  font-size: 18px;
+  font-size: clamp(14px, 3vw, 18px);
   color: #a0a0a0;
 }
 
@@ -154,13 +181,15 @@ button:disabled {
   background-color: #f5eef1;
   border-radius: 8px;
   margin-bottom: 20px;
+  text-align: left !important;
 }
 
+/* Message styling */
 .message {
   padding: 8px 12px;
   margin-bottom: 10px;
   border-radius: 8px;
-  max-width: 70%;
+  max-width: 85%;
   word-wrap: break-word;
 }
 
@@ -170,6 +199,7 @@ button:disabled {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
+  max-width: 90%;
 }
 
 .message-self {
@@ -184,15 +214,40 @@ button:disabled {
   margin-right: auto;
 }
 
+.message-username {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: clamp(12px, 2.5vw, 14px);
+}
+
+.message-timestamp {
+  font-size: clamp(10px, 2vw, 12px);
+  color: #bde0fe;
+}
+
+.message-text {
+  font-size: clamp(14px, 3vw, 18px);
+}
+
+.typing-indicator {
+  padding: 8px;
+  margin-bottom: 10px;
+  font-style: italic;
+  color: #723d86;
+  font-size: clamp(12px, 2.5vw, 16px);
+}
+
+/* Input area */
 .input-container {
   display: flex;
   margin-top: auto;
+  width: 100%;
 }
 
 .input-container input {
   flex: 1;
   padding: 10px;
-  font-size: 18px;
+  font-size: clamp(14px, 3vw, 18px);
   border: 1px solid #4b5563;
   border-radius: 4px 0 0 4px;
   background-color: #bde0fe;
@@ -204,38 +259,117 @@ button:disabled {
   border-radius: 0 4px 4px 0;
   background-color: #723d86;
   color: #ffffff;
+  padding: clamp(8px, 2vw, 15px);
 }
 
-
-.message-username {
-  font-weight: bold;
-  margin-bottom: 5px; 
+/* Emoji picker button and container */
+.emoji-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0 10px;
 }
 
-.message-timestamp {
-  font-size: 12px;
-  color: #bde0fe;
+.emoji-picker-container {
+  position: absolute;
+  bottom: 70px;
+  right: 20px;
+  z-index: 100;
 }
 
-.message-text {
-  font-size: 18px;
+/* Media queries for different screen sizes */
+@media (max-width: 768px) {
+  .chat-container {
+    height: 100vh;
+    max-height: none;
+    border-radius: 0;
+    width: 100%;
+    padding: 15px;
+  }
+  
+  .form {
+    width: 90%;
+    padding: 30px 20px;
+  }
+  
+  .chat-header {
+    margin-bottom: 15px;
+  }
+  
+  .messages-container {
+    margin-bottom: 15px;
+  }
+  
+  .message {
+    max-width: 90%;
+  }
+  
+  .emoji-picker-container {
+    right: 10px;
+    bottom: 60px;
+    transform: scale(0.8);
+    transform-origin: bottom right;
+  }
 }
 
-.messages-container {
-  display: flex;
-  flex-direction: column;
-  text-align: left !important;
-  overflow-y: auto;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 20px;
+@media (max-width: 480px) {
+  body {
+    padding: 0;
+  }
+  
+  .App-header {
+    padding: 10px;
+  }
+  
+  .form {
+    padding: 20px 15px;
+    width: 95%;
+  }
+  
+  .chat-container {
+    padding: 10px;
+  }
+  
+  .chat-header {
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .chat-header h2 {
+    order: -1;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .input-container {
+    flex-wrap: wrap;
+  }
+  
+  .input-container input {
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  
+  .input-container button {
+    border-radius: 4px;
+    width: 100%;
+  }
+  
+  .emoji-picker-container {
+    right: 5px;
+    bottom: 50px;
+    transform: scale(0.7);
+  }
 }
 
-.typing-indicator {
-  padding: 8px;
-  margin-bottom: 10px;
-  font-style: italic;
-  color: #723d86;
-  font-family: 'VT323', monospace;
-  font-size: 16px;
+/* Fix for iOS Safari 100vh issue */
+@supports (-webkit-touch-callout: none) {
+  .chat-container {
+    height: -webkit-fill-available;
+  }
+  
+  body, .App-header {
+    min-height: -webkit-fill-available;
+  }
 }

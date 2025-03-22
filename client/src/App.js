@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import EmojiPicker from 'emoji-picker-react';
 import './App.css';
 
@@ -67,15 +67,6 @@ useEffect(() => {
       scrollToBottom();
     }
   }, [messages]);
-  
-  // In server.js
-const io = new Server(server, {
-  cors: {
-    // Replace with your frontend URL when deployed
-    origin: ["http://localhost:3000", "https://your-frontend-domain.com"],
-    methods: ['GET', 'POST']
-  }
-});
 
   // Connect to socket server when entering chat page
   useEffect(() => {

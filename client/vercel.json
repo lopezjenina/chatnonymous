@@ -1,0 +1,11 @@
+{
+    "buildCommand": "npm run build",
+    "outputDirectory": "build",
+    "rewrites": [
+      { "source": "/(.*)", "destination": "/index.html" }
+    ],
+    "env": {
+      "REACT_APP_SOCKET_SERVER": "https://chatnonymous-5pt7.onrender.com"
+    }
+  }
+  
