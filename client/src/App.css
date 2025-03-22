@@ -1,0 +1,241 @@
+
+
+/* Add this at the top of your CSS file */
+.press-start-2p-regular {
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  font-family: "Outfit", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5eef1;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, .pixel-font {
+  font-family: "Press Start 2P", system-ui;
+  letter-spacing: 1px;
+}
+
+
+/* You might want to adjust the size since pixel fonts tend to be larger */
+h1 {
+  font-size: 64px;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #723d86;
+}
+
+.form {
+  background-color: #fae6e7;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  margin-top: 20px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: "Outfit", sans-serif;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+  font-family: "Outfit", sans-serif;
+  
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 16px;
+  font-family: "Outfit", sans-serif;
+}
+
+.form-group ::placeholder {
+  font-size: 16px;
+  color: #3d3d3d70;
+}
+
+.form-group input {
+  width: 92%;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: "Outfit", sans-serif;
+  color: #723d86;
+}
+
+button {
+  padding: 20px 15px;
+  background-color: #bde0fe;
+  color: #723d86;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: "Press Start 2P", system-ui;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+button:disabled {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  padding: 20px;
+  width: 500px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f5d6e2;
+  color: #723d86;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.searching-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5eef1;
+  border-radius: 8px;
+}
+
+.small-text {
+  font-size: 18px;
+  color: #a0a0a0;
+}
+
+.messages-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: #f5eef1;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.message {
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+.message-system {
+  background-color: #f5d6e2;
+  color: #3d3d3d;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.message-self {
+  background-color: #a227e9;
+  color: white;
+  margin-left: auto;
+}
+
+.message-other {
+  background-color: #2372a0;
+  color: white;
+  margin-right: auto;
+}
+
+.input-container {
+  display: flex;
+  margin-top: auto;
+}
+
+.input-container input {
+  flex: 1;
+  padding: 10px;
+  font-size: 18px;
+  border: 1px solid #4b5563;
+  border-radius: 4px 0 0 4px;
+  background-color: #bde0fe;
+  color: #723d86;
+  font-family: "Outfit", sans-serif;
+}
+
+.input-container button {
+  border-radius: 0 4px 4px 0;
+  background-color: #723d86;
+  color: #ffffff;
+}
+
+
+.message-username {
+  font-weight: bold;
+  margin-bottom: 5px; 
+}
+
+.message-timestamp {
+  font-size: 12px;
+  color: #bde0fe;
+}
+
+.message-text {
+  font-size: 18px;
+}
+
+.messages-container {
+  display: flex;
+  flex-direction: column;
+  text-align: left !important;
+  overflow-y: auto;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.typing-indicator {
+  padding: 8px;
+  margin-bottom: 10px;
+  font-style: italic;
+  color: #723d86;
+  font-family: 'VT323', monospace;
+  font-size: 16px;
+}
