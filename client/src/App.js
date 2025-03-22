@@ -81,7 +81,7 @@ const io = new Server(server, {
   useEffect(() => {
     if (page === 'chat') {
       console.log("Connecting to socket server...");
-      socketRef.current = io(process.env.REACT_APP_SOCKET_SERVER);
+      socketRef.current = io('https://chatnonymous-5pt7.onrender.com');
       
       // Send user preferences for matching
       socketRef.current.emit('find_match', { interests, location, username });
