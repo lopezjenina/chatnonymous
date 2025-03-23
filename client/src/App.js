@@ -18,6 +18,9 @@ function App() {
   const [searching, setSearching] = useState(true);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   
+  // Server status state
+  const [serverAwake, setServerAwake] = useState(true);
+  
   // Typing indicator state
   const [isTyping, setIsTyping] = useState(false);
   const [partnerIsTyping, setPartnerIsTyping] = useState(false);
@@ -30,11 +33,11 @@ function App() {
   const socketRef = useRef();
   const messagesEndRef = useRef(null);
   const partnerUsernameRef = useRef('');
+  
   // Update the ref when partnerUsername changes
-useEffect(() => {
-  partnerUsernameRef.current = partnerUsername;
-}, [partnerUsername]);
-
+  useEffect(() => {
+    partnerUsernameRef.current = partnerUsername;
+  }, [partnerUsername]);
   
   // Random username generator
   const generateRandomUsername = () => {
@@ -68,27 +71,45 @@ useEffect(() => {
     }
   }, [messages]);
 
-useEffect(() => {
-  // Check if the server is awake
-  fetch('https://chatnonymous-5pt7.onrender.com/status')
-    .then(res => res.json())
-    .then(data => {
-      setServerAwake(true);
-      console.log('Server is awake:', data);
-    })
-    .catch(err => {
-      setServerAwake(false);
-      console.error('Server might be sleeping:', err);
-    });
-}, []);
+  // Function to wake up the server
+  const wakeUpServer = () => {
+    setServerAwake(false); // Set to false while attempting to wake up
+    fetch('https://chatnonymous-5pt7.onrender.com/status')
+      .then(res => res.json())
+      .then(data => {
+        setServerAwake(true);
+        console.log('Server is now awake:', data);
+      })
+      .catch(err => {
+        console.error('Failed to wake up server:', err);
+        // Try again after a delay
+        setTimeout(() => {
+          fetch('https://chatnonymous-5pt7.onrender.com/status')
+            .then(res => res.json())
+            .then(data => {
+              setServerAwake(true);
+              console.log('Server is now awake (second attempt):', data);
+            })
+            .catch(err => {
+              console.error('Failed to wake up server (second attempt):', err);
+            });
+        }, 5000);
+      });
+  };
 
-// Then in your UI
-{!serverAwake && (
-  <div className="server-status">
-    <p>Server appears to be sleeping. Please wait a moment or click to wake it up.</p>
-    <button onClick={wakeUpServer}>Wake Up Server</button>
-  </div>
-)}
+  // Check if the server is awake
+  useEffect(() => {
+    fetch('https://chatnonymous-5pt7.onrender.com/status')
+      .then(res => res.json())
+      .then(data => {
+        setServerAwake(true);
+        console.log('Server is awake:', data);
+      })
+      .catch(err => {
+        setServerAwake(false);
+        console.error('Server might be sleeping:', err);
+      });
+  }, []);
 
   // Connect to socket server when entering chat page
   useEffect(() => {
@@ -126,19 +147,18 @@ useEffect(() => {
       });
       
       // Listen for partner disconnect
-socketRef.current.on('partner_disconnected', () => {
-  console.log("Partner disconnected");
-  setConnected(false);
-  setPartnerIsTyping(false);
-  setMessages((prev) => {
-    const disconnectMessage = { 
-      text: `${partnerUsernameRef.current} has disconnected.`, 
-      system: true 
-    };
-    return [...prev, disconnectMessage];
-  });
-});
-
+      socketRef.current.on('partner_disconnected', () => {
+        console.log("Partner disconnected");
+        setConnected(false);
+        setPartnerIsTyping(false);
+        setMessages((prev) => {
+          const disconnectMessage = { 
+            text: `${partnerUsernameRef.current} has disconnected.`, 
+            system: true 
+          };
+          return [...prev, disconnectMessage];
+        });
+      });
       
       // Listen for typing indicator
       socketRef.current.on('typing', () => {
@@ -242,6 +262,12 @@ socketRef.current.on('partner_disconnected', () => {
       <div className="App">
         <header className="App-header">
           <h1>CHATNONYMOUS</h1>
+          {!serverAwake && (
+            <div className="server-status pixel-border">
+              <p>Server appears to be sleeping. Please wait a moment or click to wake it up.</p>
+              <button className="pixel-button" onClick={wakeUpServer}>Wake Up Server</button>
+            </div>
+          )}
           <div className="form pixel-border">
             <div className="form-group">
               <label><b>Interest</b></label>
@@ -261,7 +287,13 @@ socketRef.current.on('partner_disconnected', () => {
                 placeholder="city or country"
               />
             </div>
-            <button className="pixel-button" onClick={startChat}>Chat Anonymously</button>
+            <button 
+              className="pixel-button" 
+              onClick={startChat}
+              disabled={!serverAwake}
+            >
+              Chat Anonymously
+            </button>
           </div>
         </header>
       </div>
@@ -275,6 +307,13 @@ socketRef.current.on('partner_disconnected', () => {
             <h2>CHATNONYMOUS</h2>
             <button className="pixel-button" onClick={findNewMatch}>New Chat</button>
           </div>
+          
+          {!serverAwake && (
+            <div className="server-status">
+              <p>Server appears to be sleeping. Please wait a moment or click to wake it up.</p>
+              <button className="pixel-button" onClick={wakeUpServer}>Wake Up Server</button>
+            </div>
+          )}
           
           {searching ? (
             <div className="searching-container">
