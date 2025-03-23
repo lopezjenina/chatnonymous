@@ -68,6 +68,28 @@ useEffect(() => {
     }
   }, [messages]);
 
+useEffect(() => {
+  // Check if the server is awake
+  fetch('https://chatnonymous-5pt7.onrender.com/status')
+    .then(res => res.json())
+    .then(data => {
+      setServerAwake(true);
+      console.log('Server is awake:', data);
+    })
+    .catch(err => {
+      setServerAwake(false);
+      console.error('Server might be sleeping:', err);
+    });
+}, []);
+
+// Then in your UI
+{!serverAwake && (
+  <div className="server-status">
+    <p>Server appears to be sleeping. Please wait a moment or click to wake it up.</p>
+    <button onClick={wakeUpServer}>Wake Up Server</button>
+  </div>
+)}
+
   // Connect to socket server when entering chat page
   useEffect(() => {
     if (page === 'chat') {
