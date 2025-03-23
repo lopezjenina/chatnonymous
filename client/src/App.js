@@ -9,6 +9,8 @@ function App() {
   const [location, setLocation] = useState('');
   const [username, setUsername] = useState('');
   const [partnerUsername, setPartnerUsername] = useState('');
+  const [showOptions, setShowOptions] = useState(false);
+  const [gettingLocation, setGettingLocation] = useState(false);
   
   // Chat state
   const [messages, setMessages] = useState([]);
@@ -58,6 +60,39 @@ function App() {
     const randomNumber = Math.floor(Math.random() * 100);
     
     return `${randomAdjective}${randomNoun}${randomNumber}`;
+  };
+  
+  // Get user's location
+  const getUserLocation = () => {
+    setGettingLocation(true);
+    
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          try {
+            const response = await fetch(
+              `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&localityLanguage=en`
+            );
+            const data = await response.json();
+            
+            // Use city if available, otherwise use country
+            const userLocation = data.city || data.countryName || '';
+            setLocation(userLocation);
+            setGettingLocation(false);
+          } catch (error) {
+            console.error('Error getting location name:', error);
+            setGettingLocation(false);
+          }
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+          setGettingLocation(false);
+        }
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+      setGettingLocation(false);
+    }
   };
   
   // Auto-scroll to bottom of messages
@@ -141,7 +176,7 @@ function App() {
           text: data.message, 
           fromSelf: false, 
           username: data.username,
-          timestamp: data.timestamp || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          timestamp: data.timestamp || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) // Fix timestamp
         }]);
         messageSound.current.play().catch(e => console.log('Error playing sound:', e));
       });
@@ -177,7 +212,7 @@ function App() {
         }
       };
     }
-  }, [page, interests, location, username]); // Removed partnerUsername from dependencies
+  }, [page, interests, location, username]);
   
   const startChat = () => {
     console.log('Starting chat with:', interests, location);
@@ -194,6 +229,7 @@ function App() {
     setPartnerId(null);
     setPartnerIsTyping(false);
     setPartnerUsername('');
+    setShowOptions(false);
   };
   
   const handleInputChange = (e) => {
@@ -262,38 +298,65 @@ function App() {
       <div className="App">
         <header className="App-header">
           <h1>CHATNONYMOUS</h1>
+          <p>Connect instantly with random people around the world!</p>
           {!serverAwake && (
             <div className="server-status pixel-border">
               <p>Server appears to be sleeping. Please wait a moment or click to wake it up.</p>
               <button className="pixel-button" onClick={wakeUpServer}>Wake Up Server</button>
             </div>
           )}
+          
           <div className="form pixel-border">
-            <div className="form-group">
-              <label><b>Interest</b></label>
-              <input 
-                type="text" 
-                value={interests}
-                onChange={(e) => setInterests(e.target.value)}
-                placeholder="music, travel, gaming, etc."
-              />
+            <div className="main-actions">
+              <button 
+                className="pixel-button primary-button" 
+                onClick={startChat}
+                disabled={!serverAwake}
+              >
+                Start Chatting
+              </button>
+              
+              <button 
+                className="pixel-button secondary-button" 
+                onClick={() => setShowOptions(!showOptions)}
+              >
+                {showOptions ? 'Hide Settings' : 'Show Settings'}
+              </button>
             </div>
-            <div className="form-group">
-              <label><b>Location</b></label>
-              <input 
-                type="text" 
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="city or country"
-              />
-            </div>
-            <button 
-              className="pixel-button" 
-              onClick={startChat}
-              disabled={!serverAwake}
-            >
-              Chat Anonymously
-            </button>
+            
+            {showOptions && (
+              <div className="options-container">
+                <div className="form-group">
+                  <label><b>Interests</b></label>
+                  <input 
+                    type="text" 
+                    value={interests}
+                    onChange={(e) => setInterests(e.target.value)}
+                    placeholder="music, travel, gaming, etc."
+                  />
+                </div>
+                
+                <div className="form-group location-group">
+                  <label><b>Location</b></label>
+                  <div className="location-input">
+                    <input 
+                      type="text" 
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                      placeholder="city or country"
+                      disabled={gettingLocation}
+                    />
+                    <button 
+                      className="location-button pixel-button"
+                      onClick={getUserLocation}
+                      disabled={gettingLocation}
+                    >
+                      {gettingLocation ? <i className='fa fa-spinner fa-spin'></i> : <i className="fa fa-map-marker"></i>}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </header>
       </div>
@@ -304,8 +367,9 @@ function App() {
         <div className="chat-container">
           <div className="chat-header">
             <button className="pixel-button" onClick={goBack}>Back</button>
-            <h2>CHATNONYMOUS</h2>
+              <h2>CHATNONYMOUS</h2>
             <button className="pixel-button" onClick={findNewMatch}>New Chat</button>
+            <p className="username-display">@{username}</p>
           </div>
           
           {!serverAwake && (
@@ -320,8 +384,8 @@ function App() {
               <p>Looking for someone to chat with...</p>
               <p className="small-text">
                 <b>Your username: </b>{username}<br />
-                <b>Interests: </b>{interests || 'None'}<br />
-                <b>Location: </b>{location || 'Any'}
+                {interests && <><b>Interests: </b>{interests}<br /></>}
+                {location && <><b>Location: </b>{location}<br /></>}
               </p>
             </div>
           ) : (
@@ -365,7 +429,7 @@ function App() {
                   onChange={handleInputChange}
                   onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                   disabled={!connected}
-                />
+                />       
                 <button 
                   className="pixel-button"
                   onClick={sendMessage}

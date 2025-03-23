@@ -31,16 +31,16 @@ h1, h2, h3, .pixel-font {
 
 /* Typography with responsive sizes */
 h1 {
-  font-size: clamp(20px, 5vw, 34px);
+  font-size: clamp(24px, 5vw, 32px); /* Adjusted for better responsiveness */
   margin-bottom: 20px;
 }
 
 h2 {
-  font-size: clamp(16px, 4vw, 20px);
+  font-size: clamp(18px, 4vw, 24px); /* Adjusted for better responsiveness */
 }
 
 h3 {
-  font-size: clamp(14px, 3.5vw, 20px);
+  font-size: clamp(16px, 3.5vw, 20px); /* Adjusted for better responsiveness */
 }
 
 .App {
@@ -85,11 +85,11 @@ h3 {
 .form-group label {
   display: block;
   margin-bottom: 5px;
-  font-size: clamp(14px, 3vw, 16px);
+  font-size: clamp(14px, 3vw, 18px); /* Adjusted for better responsiveness */
   font-family: "Outfit", sans-serif;
 }
 
-.form-group ::placeholder {
+.form-group input::placeholder {
   font-size: clamp(14px, 3vw, 16px);
   color: #3d3d3d70;
 }
@@ -98,7 +98,7 @@ h3 {
   width: 100%;
   padding: 10px 15px;
   margin-bottom: 20px;
-  font-size: clamp(14px, 3vw, 18px);
+  font-size: clamp(14px, 3vw, 18px); /* Adjusted for better responsiveness */
   border: 1px solid #ccc;
   border-radius: 5px;
   font-family: "Outfit", sans-serif;
@@ -107,12 +107,12 @@ h3 {
 
 /* Button styles */
 button {
-  padding: clamp(10px, 3vw, 20px) clamp(10px, 3vw, 15px);
+  padding: unset;
   background-color: #bde0fe;
   color: #723d86;
   border: none;
   border-radius: 5px;
-  font-size: clamp(10px, 2.5vw, 13px);
+  font-size: unset;
   cursor: pointer;
   font-weight: bold;
   font-family: "Press Start 2P", system-ui;
@@ -151,8 +151,21 @@ button:disabled {
 }
 
 .chat-header button {
+  all: unset;
+  display: inline-block;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: none;
   font-size: clamp(8px, 2vw, 13px);
   padding: clamp(8px, 2vw, 15px);
+  background-color: #bde0fe; /* Restore original background color */
+  color: #723d86;
 }
 
 .searching-container {
@@ -217,16 +230,16 @@ button:disabled {
 .message-username {
   font-weight: bold;
   margin-bottom: 5px;
-  font-size: clamp(12px, 2.5vw, 14px);
+  font-size: clamp(12px, 2.5vw, 16px); /* Adjusted for better responsiveness */
 }
 
 .message-timestamp {
-  font-size: clamp(10px, 2vw, 12px);
+  font-size: clamp(10px, 2vw, 14px); /* Adjusted for better responsiveness */
   color: #bde0fe;
 }
 
 .message-text {
-  font-size: clamp(14px, 3vw, 18px);
+  font-size: clamp(14px, 3vw, 18px); /* Adjusted for better responsiveness */
 }
 
 .typing-indicator {
@@ -234,7 +247,7 @@ button:disabled {
   margin-bottom: 10px;
   font-style: italic;
   color: #723d86;
-  font-size: clamp(12px, 2.5vw, 16px);
+  font-size: clamp(12px, 2.5vw, 16px); /* Adjusted for better responsiveness */
 }
 
 /* Input area */
@@ -256,6 +269,17 @@ button:disabled {
 }
 
 .input-container button {
+  all: unset;
+  display: inline-block;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: none;
   border-radius: 0 4px 4px 0;
   background-color: #723d86;
   color: #ffffff;
@@ -323,8 +347,9 @@ button:disabled {
   }
   
   .form {
-    padding: 20px 15px;
     width: 95%;
+    max-height: 80vh; /* Ensure form doesn't take up the entire screen */
+    padding: 20px 15px;
   }
   
   .chat-container {
@@ -363,6 +388,13 @@ button:disabled {
   }
 }
 
+/* Adjust form width for desktop */
+@media (min-width: 1024px) {
+  .form {
+    max-width: 500px; /* Increased width for desktop */
+  }
+}
+
 /* Fix for iOS Safari 100vh issue */
 @supports (-webkit-touch-callout: none) {
   .chat-container {
@@ -390,10 +422,151 @@ button:disabled {
 }
 
 .server-status button {
+  all: unset;
+  display: inline-block;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: none;
   background-color: #ff6666;
   color: white;
 }
 
 .server-status button:hover {
   background-color: #ff3333;
+}
+
+/* Main actions on homepage */
+.main-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.primary-button {
+  font-size: clamp(10px, 2.5vw, 14px); /* Unified font size */
+  padding: clamp(10px, 3vw, 20px) clamp(10px, 3vw, 15px);
+  transition-duration: .5s;
+  background-color: #a400c9;
+  color: white;
+}
+
+.primary-button:hover {
+  transition-duration: .5s;
+  background-color: #bd0ee4;
+}
+
+.secondary-button {
+  font-size: clamp(10px, 2.5vw, 14px); /* Unified font size */
+  padding: clamp(10px, 3vw, 20px) clamp(10px, 3vw, 15px);
+  transition-duration: .5s;
+  background-color: #a2d2ff;
+  color: #3d3d3d;
+}
+
+.secondary-button:hover {
+  transition-duration: .5s;
+  background-color: #bde0fe;
+}
+
+/* Options container */
+.options-container {
+  border-top: 1px solid #ccc;
+  padding-top: 15px;
+  margin-top: 5px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Location input group */
+.location-group {
+  margin-bottom: 10px;
+}
+
+.location-input {
+  display: flex;
+  gap: 5px;
+}
+
+.location-input input {
+  flex: 1;
+}
+
+.location-button {
+  all: unset;
+  display: inline-block;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: none;
+  width: auto;
+  padding: 12px;
+  font-size: 17px;
+  height: fit-content;
+  background-color: #bde0fe; /* Restore original background color */
+  color: #723d86;
+}
+
+/* Info text */
+.info-text {
+  text-align: center;
+  margin-top: 15px;
+  color: #666;
+}
+
+.info-text .small-text {
+  font-size: 0.8em;
+  margin-top: 5px;
+  color: #888;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .main-actions {
+    gap: 8px;
+  }
+  
+  .primary-button {
+    font-size: 1em;
+    padding: 10px;
+  }
+  
+  .location-button {
+    width: 36px;
+  }
+}
+
+.username-display {
+  font-size: clamp(14px, 3vw, 18px);
+  color: #505050;
+  text-align: right;
+}
+
+.pixel-button {
+  font-size: clamp(10px, 2.5vw, 14px); /* Unified font size */
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  transition-duration: 0.5s;
+}
+
+.pixel-button:hover {
+  opacity: 0.9;
 }
