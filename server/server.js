@@ -15,6 +15,16 @@ app.get('/', (req, res) => {
   res.send('Anonymous Chat Server is running. Connect with a Socket.io client.');
 });
 
+app.get('/status', (req, res) => {
+  res.json({
+    status: 'online',
+    waitingUsers: waitingUsers.length,
+    activePairs: activePairs.size,
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString()
+  });
+});
+
 
 const server = http.createServer(app);
 
