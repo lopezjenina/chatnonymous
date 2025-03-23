@@ -29,8 +29,8 @@ function App() {
   const typingTimeoutRef = useRef(null);
   
   // Sound refs
-  const messageSound = useRef(new Audio('/sounds/message.mp3'));
-  const connectedSound = useRef(new Audio('/sounds/connected.mp3'));
+  const messageSound = useRef(new Audio('/sounds/message.wav'));
+  const connectedSound = useRef(new Audio('/sounds/connected.wav'));
   
   const socketRef = useRef();
   const messagesEndRef = useRef(null);
@@ -44,16 +44,16 @@ function App() {
   // Random username generator
   const generateRandomUsername = () => {
     const adjectives = [
-      'Happy', 'Sleepy', 'Grumpy', 'Sneezy', 'Dopey', 'Bashful', 'Doc',
-      'Witty', 'Clever', 'Swift', 'Brave', 'Mighty', 'Noble', 'Gentle',
-      'Wise', 'Calm', 'Eager', 'Jolly', 'Lively', 'Mysterious'
+      'moldy', 'crusty', 'musty', 'greasy', 'dusty', 'soggy', 'busted',
+      'funky', 'flimsy', 'lumpy', 'crustaceous', 'floppy', 'wonky', 'gassy',
+      'stanky', 'rancid', 'wobbly', 'droopy', 'grimy', 'broke'
     ];
     
     const nouns = [
-      'Panda', 'Tiger', 'Dolphin', 'Eagle', 'Wolf', 'Fox', 'Rabbit',
-      'Dragon', 'Phoenix', 'Unicorn', 'Knight', 'Wizard', 'Ninja', 'Pirate',
-      'Explorer', 'Astronaut', 'Voyager', 'Pioneer', 'Wanderer', 'Nomad'
-    ];
+      'sock', 'nugget', 'dumpster', 'gremlin', 'toenail', 'cabbage', 'pigeon',
+      'waffle', 'troll', 'sponge', 'cheeseball', 'noodle', 'trashcan', 'mop',
+      'meatball', 'dustpan', 'fungus', 'goblin', 'potato', 'fartcloud'
+    ];    
     
     const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
     const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
@@ -172,11 +172,14 @@ function App() {
       // Listen for incoming messages
       socketRef.current.on('receive_message', (data) => {
         console.log("Received message:", data.message);
+        const timestamp = data.timestamp && !isNaN(new Date(data.timestamp).getTime())
+          ? new Date(data.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          : new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         setMessages((prev) => [...prev, { 
           text: data.message, 
           fromSelf: false, 
           username: data.username,
-          timestamp: data.timestamp || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) // Fix timestamp
+          timestamp: timestamp
         }]);
         messageSound.current.play().catch(e => console.log('Error playing sound:', e));
       });
@@ -298,7 +301,7 @@ function App() {
       <div className="App">
         <header className="App-header">
           <h1>CHATNONYMOUS</h1>
-          <p>Connect instantly with random people around the world!</p>
+          <p className="App-subheading">Connect instantly with random people around the world!</p>
           {!serverAwake && (
             <div className="server-status pixel-border">
               <p>Server appears to be sleeping. Please wait a moment or click to wake it up.</p>
@@ -357,6 +360,11 @@ function App() {
                 </div>
               </div>
             )}
+          </div>
+          <div className="donate-link">
+            <p>
+              Support. <a href="https://www.buymeacoffee.com/httpsjen" target="_blank" rel="noopener noreferrer">Buy me a coffee!</a>
+            </p>
           </div>
         </header>
       </div>
@@ -443,7 +451,13 @@ function App() {
                   </div>
                 )}
               </div>
+              <div className="donate-link">
+            <p>
+              Support. <a href="https://www.buymeacoffee.com/httpsjen" target="_blank" rel="noopener noreferrer">Buy me a coffee!</a>
+            </p>
+          </div>
             </>
+            
           )}
         </div>
       </div>
